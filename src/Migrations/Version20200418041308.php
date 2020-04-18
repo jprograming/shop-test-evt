@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20200417030622 extends AbstractMigration
+final class Version20200418041308 extends AbstractMigration
 {
     public function getDescription() : string
     {
@@ -22,7 +22,7 @@ final class Version20200417030622 extends AbstractMigration
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'postgresql', 'Migration can only be executed safely on \'postgresql\'.');
 
-        $this->addSql('CREATE TABLE products (id SERIAL NOT NULL, category_id INT NOT NULL, name VARCHAR(255) NOT NULL, description TEXT NOT NULL, size VARCHAR(3) NOT NULL, price DOUBLE PRECISION NOT NULL, genre VARCHAR(1) NOT NULL, stock INT NOT NULL, photo VARCHAR(255) NOT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, updated_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE TABLE products (id SERIAL NOT NULL, category_id INT NOT NULL, name VARCHAR(255) NOT NULL, description TEXT NOT NULL, price DOUBLE PRECISION NOT NULL, photo VARCHAR(255) NOT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, updated_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_B3BA5A5A5E237E06 ON products (name)');
         $this->addSql('CREATE INDEX IDX_B3BA5A5A12469DE2 ON products (category_id)');
         $this->addSql('CREATE TABLE orders_detail (id SERIAL NOT NULL, order_id INT NOT NULL, product_id INT NOT NULL, price DOUBLE PRECISION NOT NULL, quantity INT NOT NULL, subtotal DOUBLE PRECISION NOT NULL, PRIMARY KEY(id))');
@@ -31,7 +31,7 @@ final class Version20200417030622 extends AbstractMigration
         $this->addSql('CREATE UNIQUE INDEX order_detail_unique ON orders_detail (order_id, product_id)');
         $this->addSql('CREATE TABLE orders (id SERIAL NOT NULL, customer_id INT NOT NULL, code UUID NOT NULL, total_to_pay DOUBLE PRECISION NOT NULL, status VARCHAR(20) NOT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, updated_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE INDEX IDX_E52FFDEE9395C3F3 ON orders (customer_id)');
-        $this->addSql('CREATE TABLE customers (id SERIAL NOT NULL, name VARCHAR(80) NOT NULL, email VARCHAR(120) NOT NULL, mobile VARCHAR(40) NOT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, updated_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE TABLE customers (id SERIAL NOT NULL, name VARCHAR(80) NOT NULL, email VARCHAR(120) NOT NULL, mobile VARCHAR(40) NOT NULL, address VARCHAR(255) NOT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, updated_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_62534E21E7927C74 ON customers (email)');
         $this->addSql('CREATE TABLE categories (id SERIAL NOT NULL, name VARCHAR(180) NOT NULL, description TEXT DEFAULT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_3AF346685E237E06 ON categories (name)');

@@ -15,6 +15,7 @@ class Customer
     use TimestampableEntity;
 
     /**
+     * @var int
      * @ORM\Id()
      * @ORM\GeneratedValue(strategy="IDENTITY")
      * @ORM\Column(type="integer")
@@ -22,19 +23,28 @@ class Customer
     private $id;
 
     /**
+     * @var string
      * @ORM\Column(type="string", length=80)
      */
     private $name;
 
     /**
+     * @var string
      * @ORM\Column(type="string", length=120, unique=true)
      */
     private $email;
 
     /**
+     * @var string
      * @ORM\Column(type="string", length=40)
      */
     private $mobile;
+
+    /**
+     * @var string
+     * @ORM\Column(type="string", length=255)
+     */
+    private $address;
 
     /**
      * @return int|null
@@ -100,4 +110,24 @@ class Customer
 
         return $this;
     }
+
+    /**
+     * @return string
+     */
+    public function getAddress(): ?string
+    {
+        return $this->address;
+    }
+
+    /**
+     * @param string $address
+     * @return Customer
+     */
+    public function setAddress(string $address): self
+    {
+        $this->address = $address;
+
+        return $this;
+    }
+
 }

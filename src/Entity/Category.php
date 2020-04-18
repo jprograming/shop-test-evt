@@ -11,6 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 class Category
 {
     /**
+     * @var int
      * @ORM\Id()
      * @ORM\GeneratedValue(strategy="IDENTITY")
      * @ORM\Column(type="integer")
@@ -18,11 +19,13 @@ class Category
     private $id;
 
     /**
+     * @var string
      * @ORM\Column(type="string", length=180, unique=true)
      */
     private $name;
 
     /**
+     * @var string
      * @ORM\Column(type="text", nullable=true)
      */
     private $description;

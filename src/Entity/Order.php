@@ -21,6 +21,7 @@ class Order
     use TimestampableEntity;
 
     /**
+     * @var int
      * @ORM\Id()
      * @ORM\GeneratedValue(strategy="IDENTITY")
      * @ORM\Column(type="integer")
@@ -28,22 +29,26 @@ class Order
     private $id;
 
     /**
+     * @var string
      * @ORM\Column(type="guid")
      */
     private $code;
 
     /**
+     * @var Customer
      * @ORM\ManyToOne(targetEntity="App\Entity\Customer")
      * @ORM\JoinColumn(nullable=false)
      */
     private $customer;
 
     /**
+     * @var float
      * @ORM\Column(type="float")
      */
     private $totalToPay;
 
     /**
+     * @var string
      * @ORM\Column(type="string", length=20)
      */
     private $status;

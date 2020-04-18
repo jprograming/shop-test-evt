@@ -19,6 +19,7 @@ use Doctrine\ORM\Mapping as ORM;
 class OrderDetail
 {
     /**
+     * @var int
      * @ORM\Id()
      * @ORM\GeneratedValue(strategy="IDENTITY")
      * @ORM\Column(type="integer")
@@ -26,28 +27,33 @@ class OrderDetail
     private $id;
 
     /**
+     * @var Order
      * @ORM\ManyToOne(targetEntity="App\Entity\Order")
      * @ORM\JoinColumn(name="order_id", nullable=false)
      */
     private $orderReference;
 
     /**
+     * @var Product
      * @ORM\ManyToOne(targetEntity="App\Entity\Product")
      * @ORM\JoinColumn(nullable=false)
      */
     private $product;
 
     /**
+     * @var float
      * @ORM\Column(type="float")
      */
     private $price;
 
     /**
+     * @var int
      * @ORM\Column(type="integer")
      */
     private $quantity;
 
     /**
+     * @var float
      * @ORM\Column(type="float")
      */
     private $subtotal;
