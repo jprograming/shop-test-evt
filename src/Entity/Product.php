@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+
+use App\Util\UtilString;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 
@@ -47,12 +49,19 @@ class Product
      */
     private $category;
 
-
     /**
      * @var string
      * @ORM\Column(type="string", length=255)
      */
     private $photo;
+
+    /**
+     * @return null|string
+     */
+    public function __toString()
+    {
+        return $this->getName();
+    }
 
     /**
      * @return int|null
@@ -120,11 +129,12 @@ class Product
     }
 
     /**
+     * Returns the price in money format
      * @return null|string
      */
     public function getFormattedPrice(): string
     {
-        return (!is_null($this->price)) ? '$'.number_format($this->price, 2) : "";
+        return UtilString::getMoneyFormatOrEmpty($this->price);
     }
 
     /**

@@ -29,7 +29,9 @@ final class Version20200418041308 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_8F9646428D9F6D38 ON orders_detail (order_id)');
         $this->addSql('CREATE INDEX IDX_8F9646424584665A ON orders_detail (product_id)');
         $this->addSql('CREATE UNIQUE INDEX order_detail_unique ON orders_detail (order_id, product_id)');
-        $this->addSql('CREATE TABLE orders (id SERIAL NOT NULL, customer_id INT NOT NULL, code UUID NOT NULL, total_to_pay DOUBLE PRECISION NOT NULL, status VARCHAR(20) NOT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, updated_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE TABLE orders (id SERIAL NOT NULL, customer_id INT NOT NULL, code VARCHAR(255) DEFAULT NULL, url_code VARCHAR(255) DEFAULT NULL, total_to_pay DOUBLE PRECISION NOT NULL, status VARCHAR(20) NOT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, updated_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE UNIQUE INDEX UNIQ_E52FFDEE77153098 ON orders (code)');
+        $this->addSql('CREATE UNIQUE INDEX UNIQ_E52FFDEE6941F920 ON orders (url_code)');
         $this->addSql('CREATE INDEX IDX_E52FFDEE9395C3F3 ON orders (customer_id)');
         $this->addSql('CREATE TABLE customers (id SERIAL NOT NULL, name VARCHAR(80) NOT NULL, email VARCHAR(120) NOT NULL, mobile VARCHAR(40) NOT NULL, address VARCHAR(255) NOT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, updated_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_62534E21E7927C74 ON customers (email)');

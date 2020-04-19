@@ -2,11 +2,17 @@
 
 namespace App\Entity;
 
+use App\Util\UtilString;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\OrderRepository")
+ * @ORM\EntityListeners({"App\Listeners\OrderListener"})
+ * @ORM\HasLifecycleCallbacks()
  * @ORM\Table(name="orders")
  */
 class Order
@@ -30,13 +36,19 @@ class Order
 
     /**
      * @var string
-     * @ORM\Column(type="guid")
+     * @ORM\Column(type="string", length=255, unique=true, nullable=true)
      */
     private $code;
 
     /**
+     * @var string
+     * @ORM\Column(type="string", length=255, unique=true, nullable=true)
+     */
+    private $urlCode;
+
+    /**
      * @var Customer
-     * @ORM\ManyToOne(targetEntity="App\Entity\Customer")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Customer", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $customer;
@@ -54,11 +66,24 @@ class Order
     private $status;
 
     /**
+     * @var OrderDetail
+     * @ORM\OneToMany(
+     *     targetEntity="OrderDetail",
+     *     mappedBy="orderReference",
+     *     cascade={"persist"},
+     *     orphanRemoval=true,
+     *     fetch="EXTRA_LAZY"
+     * )
+     */
+    private $details;
+
+    /**
      * Constructor.
      */
     public function __construct()
     {
         $this->setStatus(self::CREATED_STATUS);
+        $this->details = new ArrayCollection();
     }
 
     /**
@@ -87,6 +112,26 @@ class Order
 
         return $this;
     }
+
+    /**
+     * @return string|null
+     */
+    public function getUrlCode(): ?string
+    {
+        return $this->urlCode;
+    }
+
+    /**
+     * @param string $urlCode
+     * @return Order
+     */
+    public function setUrlCode(string $urlCode): self
+    {
+        $this->urlCode = $urlCode;
+
+        return $this;
+    }
+
 
     /**
      * @return Customer|null
@@ -127,6 +172,15 @@ class Order
     }
 
     /**
+     * Returns the total to pay in money format
+     * @return string
+     */
+    public function getFormattedTotalToPay(): string
+    {
+        return UtilString::getMoneyFormatOrEmpty($this->totalToPay);
+    }
+
+    /**
      * @return null|string
      */
     public function getStatus(): ?string
@@ -141,6 +195,41 @@ class Order
     public function setStatus(string $status): self
     {
         $this->status = $status;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|null
+     */
+    public function getDetails(): ?Collection
+    {
+        return $this->details;
+    }
+
+    /**
+     * @param OrderDetail $detail
+     * @return Order
+     */
+    public function addDetail(OrderDetail $detail): self
+    {
+        if (!$this->details->contains($detail)) {
+            $detail->setOrderReference($this);
+            $this->details[] = $detail;
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param OrderDetail $detail
+     * @return Order
+     */
+    public function removeDetail(OrderDetail $detail): self
+    {
+        if ($this->details->contains($detail)) {
+            $this->details->removeElement($detail);
+        }
 
         return $this;
     }

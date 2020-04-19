@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Util\UtilString;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -28,7 +29,7 @@ class OrderDetail
 
     /**
      * @var Order
-     * @ORM\ManyToOne(targetEntity="App\Entity\Order")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Order", inversedBy="details")
      * @ORM\JoinColumn(name="order_id", nullable=false)
      */
     private $orderReference;
@@ -124,6 +125,15 @@ class OrderDetail
     }
 
     /**
+     * Returns the price in money format
+     * @return string
+     */
+    public function getFormattedPrice(): string
+    {
+        return UtilString::getMoneyFormatOrEmpty($this->price);
+    }
+
+    /**
      * @return int|null
      */
     public function getQuantity(): ?int
@@ -159,5 +169,14 @@ class OrderDetail
         $this->subtotal = $subtotal;
 
         return $this;
+    }
+
+    /**
+     * Returns the subtotal in money format
+     * @return string
+     */
+    public function getFormattedSubtotal(): string
+    {
+        return UtilString::getMoneyFormatOrEmpty($this->subtotal);
     }
 }

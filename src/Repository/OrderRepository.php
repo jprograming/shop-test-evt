@@ -14,6 +14,7 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class OrderRepository extends ServiceEntityRepository
 {
+
     /**
      * Constructor.
      * @param ManagerRegistry $registry
@@ -21,5 +22,17 @@ class OrderRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Order::class);
+    }
+
+    /**
+     * Returns an order according to the url code given.
+     * @param string $urlCode
+     * @return Order|null
+     */
+    public function getOrderByUrlCode(string $urlCode): ?Order
+    {
+        return $this->findOneBy([
+            'urlCode' => $urlCode
+        ]);
     }
 }

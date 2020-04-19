@@ -14,6 +14,7 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class CustomerRepository extends ServiceEntityRepository
 {
+
     /**
      * Constructor.
      * @param ManagerRegistry $registry
@@ -21,5 +22,17 @@ class CustomerRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Customer::class);
+    }
+
+    /**
+     * Returns a customer according to email given.
+     * @param string $email
+     * @return Customer|null
+     */
+    public function getCustomerByEmail(string $email): ?Customer
+    {
+        return $this->findOneBy([
+            'email' => $email
+        ]);
     }
 }

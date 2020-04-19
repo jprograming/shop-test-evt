@@ -9,7 +9,11 @@
     <div class="col-lg-5">
         <div class="card mt-3">
             <div class="card-body">
-                <img width="400" height="400" src="{{ asset(product.photo) }}">
+                {{ include('product/_photo.html.twig', {
+                    width: 400,
+                    height: 400,
+                    path: product.photo
+                })}}
             </div>
         </div>
     </div>
@@ -17,18 +21,20 @@
     <div class="col-lg-7">
         <div class="card mt-3">
             <div class="card-body">
+
                 <h2>{{ product.name }}</h2>
                 <h3>{{ product.formattedPrice }}</h3>
                 <h4 class="badge badge-success">Disponible</h4>
                 <p>
                     {{ product.description }}
                 </p>
-
-                <div>
-                    <form method="post" action="">
-                        <button type="submit" class="btn btn-info">Comprar</button>
-                    </form>
-                </div>
+                <form method="get" action="{{ path('new_order', { productId: product.id}) }}">
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">Cantidad</label>
+                        <input type="number" class="form-control col-2" name="q">
+                    </div>
+                    <button type="submit" class="btn btn-info">Comprar</button>
+                </form>
             </div>
         </div>
     </div>
