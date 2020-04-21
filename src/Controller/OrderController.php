@@ -154,8 +154,10 @@ class OrderController extends AbstractController
                 ->getRepository(PlacetoPayIntegration::class)->getRecordByOrder($order)
             ;
             $requestInformation->process($ppIntegration->getRequestId(), $order);
+            $orderApproved = $order->getStatus() == Order::PAYED_STATUS;
             return $this->render('order/status.html.twig', [
-                'order' => $order
+                'order' => $order,
+                'approved' => $orderApproved
             ]);
 
         } catch (LogicException $exception) {

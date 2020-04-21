@@ -13,7 +13,7 @@
     </div>
 
     <div>
-        <form method="post" action="{{ path('status_pay', { code: order.code }) }}">
+        <form method="post" action="{{ path('request_pay_order', { code: order.code }) }}">
             <button type="submit" class="btn btn-info btn-large">Reintentar</button>
         </form>
     </div>
