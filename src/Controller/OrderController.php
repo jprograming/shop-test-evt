@@ -6,6 +6,7 @@ use App\Entity\Order;
 use App\Entity\Product;
 use App\Form\OrderType;
 use App\Managers\OrderManager;
+use App\Services\PlacetoPay\PaymentRequest;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -86,7 +87,7 @@ class OrderController extends AbstractController
     /**
      * Action that shows an order.
      * @param string $urlCode
-     * @Route("/order/show/{urlCode}", name="show_order", methods={"GET"})
+     * @Route("/order/{urlCode}/show", name="show_order", methods={"GET"})
      * @return Response
      */
     public function show(string $urlCode)
@@ -101,5 +102,24 @@ class OrderController extends AbstractController
             'order' => $order,
             'detail' => $order->getDetails()->first()
         ]);
+    }
+
+    /**
+     * @Route("/order/{urlCode}/status", name="status_order")
+     * @param string $urlCode
+     */
+    public function status(string $urlCode)
+    {
+        dd('estado orden');
+    }
+
+    /**
+     * @param PaymentRequest $paymentRequest
+     * @param string $urlCode
+     * @Route("/order/{urlCode}/pay", name="status_pay")
+     */
+    public function pay(PaymentRequest $paymentRequest, string $urlCode)
+    {
+        $paymentRequest->testRequest($urlCode);
     }
 }
