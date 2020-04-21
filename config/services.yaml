@@ -4,6 +4,9 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
+    placeto_pay_login: '%env(PLACETOPAY_LOGIN)%'
+    placeto_pay_trankey: '%env(PLACETOPAY_TRANKEY)%'
+    placeto_pay_base_url: '%env(PLACETOPAY_BASE_URL)%'
 
 services:
     # default configuration for services in *this* file

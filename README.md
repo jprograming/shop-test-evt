@@ -30,5 +30,7 @@ Instalación
 	# crear la base de datos
 	$ php bin/console doctrine:database:create
 	# ejecutar migraciones
-	$ php bin/console doctrine:migrations:migrate
+	$ php bin/console doctrine:migrations:migrate 
+	# ejecutar fixtures
+	$ php bin/console doctrine:fixtures:load --no-interaction 
 	```

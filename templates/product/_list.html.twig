@@ -1,0 +1,15 @@
+
+{% for product in products %}
+    <div class="card mt-3">
+        <div class="card-body">
+            {{ include('product/_photo.html.twig', {
+                width: 300,
+                height: 300,
+                path: product.photo
+            })}}
+            <h2>{{ product.name }}</h2>
+            <span>{{ product.formattedPrice }}</span>
+            <a class="btn btn-default" href="{{ path('show_product',{ 'id' :  product.id}) }}">Ver</a>
+        </div>
+    </div>
+{% endfor %}

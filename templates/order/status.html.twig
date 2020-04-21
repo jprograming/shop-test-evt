@@ -1,0 +1,36 @@
+{% extends 'main.html.twig' %}
+
+{% block title %}
+    {% if approved == true %}
+        Pago realizado!
+    {% else %}
+        Pago rechazado!
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+
+    <h1>Estado de la orden</h1>
+
+    {% if approved == true %}
+        <div class="alert alert-success">
+            <h4 class="badge badge-success">{{ order.status }}</h4>
+            <p>
+                El pago realizado para la orden No. {{ order.code }} fue aprobado.
+            </p>
+        </div>
+    {% else %}
+        <div class="alert alert-danger">
+            <h4 class="badge badge-danger">{{ order.status }}</h4>
+            <p>
+                El pago realizado para la orden No. {{ order.code }} fue rechazado.
+            </p>
+        </div>
+        <div>
+            <form method="post" action="{{ path('request_pay_order', { code: order.code }) }}">
+                <button type="submit" class="btn btn-info btn-large">Reintentar</button>
+            </form>
+        </div>
+    {% endif %}
+
+{% endblock %}
