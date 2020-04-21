@@ -42,7 +42,7 @@ class OrderController extends AbstractController
     public function new(int $productId, Request $request)
     {
         $product = $this->getDoctrine()->getRepository(Product::class)->find($productId);
-        $quantity = (int) $request->get('q', 1);
+        $quantity = abs((int) $request->get('q', 1));
 
         if (!$product) {
             throw $this->createNotFoundException('El producto no existe!');

@@ -30,7 +30,7 @@ class OrderListener implements EventSubscriber
      */
     public function postPersist(Order $order, LifecycleEventArgs $args)
     {
-        $code = str_pad("{$order->getId()}",  10, "0", STR_PAD_LEFT);
+        $code = "JV" . str_pad("{$order->getId()}",  8, "0", STR_PAD_LEFT);
         $order->setCode($code);
         $entityManager = $args->getObjectManager();
         $entityManager->flush();

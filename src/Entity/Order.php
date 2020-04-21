@@ -97,12 +97,12 @@ class Order
     }
 
     /**
-     * @param string $urlCode
+     * @param string $code
      * @return Order
      */
-    public function setUrlCode(string $urlCode): self
+    public function setCode(string $code): self
     {
-        $this->urlCode = $urlCode;
+        $this->code = $code;
 
         return $this;
     }
