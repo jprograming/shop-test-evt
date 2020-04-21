@@ -25,14 +25,14 @@ class OrderRepository extends ServiceEntityRepository
     }
 
     /**
-     * Returns an order according to the url code given.
-     * @param string $urlCode
+     * Returns an order according to the code given.
+     * @param string $code
      * @return Order|null
      */
-    public function getOrderByUrlCode(string $urlCode): ?Order
+    public function getOrderByCode(string $code): ?Order
     {
         return $this->findOneBy([
-            'urlCode' => $urlCode
+            'code' => $code
         ]);
     }
 }

@@ -50,16 +50,17 @@ class InstanceConfiguration
      */
     private function createInstance()
     {
-        $parametes = [
+        $parameters = [
             'login' => $this->params->get('placeto_pay_login'),
             'tranKey' => $this->params->get('placeto_pay_trankey'),
             'url' => $this->params->get('placeto_pay_base_url'),
+            'type' => PlacetoPay::TP_REST,
             'rest' => [
                 'timeout' => 45,
                 'connect_timeout' => 30,
             ]
         ];
         //dd($parametes);
-        $this->instance = new PlacetoPay($parametes);
+        $this->instance = new PlacetoPay($parameters);
     }
 }

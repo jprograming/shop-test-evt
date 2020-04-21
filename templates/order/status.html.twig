@@ -1,0 +1,16 @@
+{% extends 'main.html.twig' %}
+
+{% block title %}Error de pago{% endblock %}
+
+{% block content %}
+
+    <h1>Estado de la orden</h1>
+
+    <div class="alert alert-success">
+        <h4 class="badge badge-success">{{ order.status }}</h4>
+        <p>
+            El pago realizado para la order No. {{ order.code }} fue aprobado.
+        </p>
+    </div>
+
+{% endblock %}

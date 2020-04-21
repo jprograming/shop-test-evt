@@ -30,6 +30,17 @@ class Customer
 
     /**
      * @var string
+     * @ORM\Column(type="string", length=80)
+     */
+    private $surname;
+
+    /**
+     * @var string
+     * @ORM\Column(type="string", length=80)
+     */
+
+    /**
+     * @var string
      * @ORM\Column(type="string", length=120, unique=true)
      */
     private $email;
@@ -69,6 +80,25 @@ class Customer
     public function setName(string $name): self
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSurname(): ?string
+    {
+        return $this->surname;
+    }
+
+    /**
+     * @param string $surname
+     * @return Customer
+     */
+    public function setSurname(string $surname): self
+    {
+        $this->surname = $surname;
 
         return $this;
     }

@@ -9,14 +9,14 @@ use App\Entity\Product;
 use Doctrine\ORM\EntityManagerInterface;
 
 /**
- * Class OrderManager
+ * Class that manages the related operations with Order entitty.
  * @package App\Managers
  */
 class OrderManager
 {
 
     /**
-     * @var
+     * @var EntityManagerInterface
      */
     private $entityManager;
 
@@ -59,6 +59,10 @@ class OrderManager
         return $order;
     }
 
+    /**
+     * Save a new order.
+     * @param Order $order
+     */
     public function createOrder(Order $order)
     {
         if ($order->getId()) {
@@ -88,12 +92,23 @@ class OrderManager
     }
 
     /**
-     * @see OrderRepository::getOrderByUrlCode()
-     * @param string $urlCode
-     * @return mixed
+     * @see OrderRepository::getOrderByCode()
+     * @param string $code
+     * @return Order|null
      */
-    public function getOrderByUrlCode(string $urlCode)
+    public function getOrderByCode(string $code): ?Order
     {
-        return $this->entityManager->getRepository(Order::class)->getOrderByUrlCode($urlCode);
+        return $this->entityManager->getRepository(Order::class)->getOrderByCode($code);
+    }
+
+    /**
+     * Updates the order status.
+     * @param Order $order
+     * @param string $newStatus
+     */
+    public function updateOrderStatus(Order $order, string $newStatus)
+    {
+        $order->setStatus($newStatus);
+        $this->entityManager->flush();
     }
 }

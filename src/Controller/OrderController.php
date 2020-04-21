@@ -3,14 +3,17 @@
 namespace App\Controller;
 
 use App\Entity\Order;
+use App\Entity\PlacetoPayIntegration;
 use App\Entity\Product;
 use App\Form\OrderType;
 use App\Managers\OrderManager;
 use App\Services\PlacetoPay\PaymentRequest;
+use App\Services\PlacetoPay\RequestInformation;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Validator\Exception\LogicException;
 
 class OrderController extends AbstractController
 {
@@ -72,7 +75,7 @@ class OrderController extends AbstractController
             $order = $form->getData();
             $this->orderManager->createOrder($order);
             return $this->redirectToRoute('show_order', [
-                'urlCode' => $order->getUrlCode()
+                'code' => $order->getCode()
             ]);
         }
 
@@ -86,13 +89,13 @@ class OrderController extends AbstractController
 
     /**
      * Action that shows an order.
-     * @param string $urlCode
-     * @Route("/order/{urlCode}/show", name="show_order", methods={"GET"})
+     * @param string $code
+     * @Route("/order/{code}/show", name="show_order", methods={"GET"})
      * @return Response
      */
-    public function show(string $urlCode)
+    public function show(string $code)
     {
-        $order = $this->orderManager->getOrderByUrlCode($urlCode);
+        $order = $this->orderManager->getOrderByCode($code);
 
         if (!$order) {
             throw $this->createNotFoundException('La orden no existe!');
@@ -105,21 +108,60 @@ class OrderController extends AbstractController
     }
 
     /**
-     * @Route("/order/{urlCode}/status", name="status_order")
-     * @param string $urlCode
+     * @param PaymentRequest $paymentRequest
+     * @param string $code
+     * @Route("/order/{code}/pay", name="request_pay_order")
+     * @return Response
+     * @throws \Dnetix\Redirection\Exceptions\PlacetoPayException
      */
-    public function status(string $urlCode)
+    public function pay(PaymentRequest $paymentRequest, string $code)
     {
-        dd('estado orden');
+        $order = $this->orderManager->getOrderByCode($code);
+
+        if (!$order) {
+            throw $this->createNotFoundException('La orden no existe!');
+        }
+
+        try {
+            $redirect = $paymentRequest->sendPaymentRequest($order);
+            return $this->redirect($redirect);
+        } catch (LogicException $exception) {
+            return $this->render('order/payment_request_error.html.twig', [
+                'error' => $exception->getMessage()
+            ]);
+        }
     }
 
     /**
-     * @param PaymentRequest $paymentRequest
-     * @param string $urlCode
-     * @Route("/order/{urlCode}/pay", name="status_pay")
+     * @param RequestInformation $requestInformation
+     * @param string $code
+     * @Route("/order/{code}/status", name="response_pay_order")
+     * @return Response
      */
-    public function pay(PaymentRequest $paymentRequest, string $urlCode)
+    public function status(RequestInformation $requestInformation, string $code)
     {
-        $paymentRequest->testRequest($urlCode);
+        $order = $this->orderManager->getOrderByCode($code);
+
+        if (!$order) {
+            throw $this->createNotFoundException('La orden no existe!');
+        }
+
+        try {
+            // get integration record
+            $ppIntegration = $this
+                ->getDoctrine()
+                ->getManager()
+                ->getRepository(PlacetoPayIntegration::class)->getRecordByOrder($order)
+            ;
+            $requestInformation->process($ppIntegration->getRequestId(), $order);
+            return $this->render('order/status.html.twig', [
+                'order' => $order
+            ]);
+
+        } catch (LogicException $exception) {
+            return $this->render('order/payment_response_error.html.twig', [
+                'order' => $order
+            ]);
+        }
     }
 }

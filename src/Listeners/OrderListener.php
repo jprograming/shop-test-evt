@@ -32,8 +32,6 @@ class OrderListener implements EventSubscriber
     {
         $code = str_pad("{$order->getId()}",  10, "0", STR_PAD_LEFT);
         $order->setCode($code);
-        $order->setUrlCode(sha1($code));
-
         $entityManager = $args->getObjectManager();
         $entityManager->flush();
     }

@@ -41,12 +41,6 @@ class Order
     private $code;
 
     /**
-     * @var string
-     * @ORM\Column(type="string", length=255, unique=true, nullable=true)
-     */
-    private $urlCode;
-
-    /**
      * @var Customer
      * @ORM\ManyToOne(targetEntity="App\Entity\Customer", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
@@ -103,25 +97,6 @@ class Order
     }
 
     /**
-     * @param string $code
-     * @return Order
-     */
-    public function setCode(string $code): self
-    {
-        $this->code = $code;
-
-        return $this;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getUrlCode(): ?string
-    {
-        return $this->urlCode;
-    }
-
-    /**
      * @param string $urlCode
      * @return Order
      */
@@ -131,7 +106,6 @@ class Order
 
         return $this;
     }
-
 
     /**
      * @return Customer|null

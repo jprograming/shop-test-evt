@@ -24,6 +24,9 @@ class CustomerType extends AbstractType
             ->add('name', TextType::class, [
                 'label' => 'Nombre'
             ])
+            ->add('surname', TextType::class, [
+                'label' => 'Apellido'
+            ])
             ->add('email', TextType::class, [
                 'label' => 'Email'
             ])
