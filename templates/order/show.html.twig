@@ -1,83 +1,73 @@
 {% extends 'main.html.twig' %}
 
-{% block title %}Comprar articulo{% endblock %}
+{% block title %}Orden N°: {{ order.id }}{% endblock %}
 
 {% block content %}
 
-    <h1>Orden generada</h1>
-
-
-    <div class="row">
-        <div class="col-7">
-            <div class="card">
-                <div class="card-body">
-                    <div class="form-group">
-                        <label>Nombre</label>
-                        <div class="form-control">
-                            {{ order.customer.name }}
-                        </div>
+    <div class="container-fluit">
+        <div class="row justify-content-md-center">
+            <div class="col">
+                <div class="card" style="width: 400px;">
+                    <div class="card-header" style="color:cornflowerblue">
+                        Orden N° {{ order.id }}
                     </div>
+                    <div class="card-body" style="color:cornflowerblue">
+                        <h5 class="card-title">Información Orden</h5>
+                        <b class="card-text">Nombre:</b>
+                        <span>{{ order.customer.name|capitalize }} </span>
+                        </br>
+                        <b class="card-text">Correo:</b>
+                        <span>{{ order.customer.email }} </span>
+                        </br>
+                        <b class="card-text">Estado:</b>
+                        <span>{{ order.status }} </span>
+                        </br>
+                        <b class="card-text">Total a pagar:</b>
+                        <span>{{ order.totalToPay }} </span>
 
-                    <div class="form-group">
-                        <label>Nombre</label>
-                        <div class="form-control">
-                            {{ order.customer.surname }}
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Email</label>
-                        <div class="form-control">
-                            {{ order.customer.email }}
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Celular</label>
-                        <div class="form-control">
-                            {{ order.customer.mobile }}
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Dirección domicilio</label>
-                        <div class="form-control">
-                            {{ order.customer.address }}
-                        </div>
+                        {%  if is_payed_status == false %}
+                            <form class="mt-5" method="post" action="{{ path('request_pay_order', { code: order.code }) }}">
+                                <button type="submit" class="btn btn-info btn-large">Pagar</button>
+                            </form>
+                        {% endif %}
                     </div>
                 </div>
             </div>
-
-            <form method="post" action="{{ path('request_pay_order', { code: order.code }) }}">
-                <button type="submit" class="btn btn-info btn-large">Pagar</button>
-            </form>
-
+            <div class="col col-lg-6">
+                <img width="200" src="{{ asset('img/3582346.jpg') }}"></img>
+            </div>
         </div>
-
-        <div class="col-5">
-            <div class="card">
-                <div class="card-body">
-                    <div>
-                        Orden No: <strong>{{ order.code }}</strong>
-                    </div>
-                    <div>
-                        Estado: <strong>{{ order.status }}</strong>
-                    </div>
-                    <h3>{{ detail.product.name }}</h3>
-                    {{ include('product/_photo.html.twig', {
-                        width: 200,
-                        height: 200,
-                        path: detail.product.photo
-                    })}}
-                    <h5>Cantidad: {{ detail.quantity }}</h5>
-                    <h5>Precio Unitario: {{ detail.formattedPrice }}</h5>
-                    <div>
-                        <h4>Total a pagar: {{ order.formattedTotalToPay }}</h4>
-                    </div>
-                </div>
-
+        <div class="row justify-content-md-center mt-3">
+            <div class="col-md-lg">
+                <h3 style="text-align:center">Detalles Orden</h3>
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">Codigo</th>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Descrición</th>
+                        <th scope="col">Precio</th>
+                        <th scope="col">Cantidad</th>
+                        <th scope="col">Valor total</th>
+                        <th scope="col"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <th scope="row">{{ detail.product.id }}</th>
+                        <td>{{ detail.product.name }}</td>
+                        <td>{{ detail.product.description }}</td>
+                        <td>{{ detail.price }}</td>
+                        <td>{{ detail.quantity }}</td>
+                        <td>{{ detail.price * detail.quantity }}</td>
+                        <td>
+                            <img width="70" src="{{ asset(detail.product.photo) }}"> </img>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
-
 {% endblock %}
+

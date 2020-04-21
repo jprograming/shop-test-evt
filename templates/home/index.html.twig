@@ -5,10 +5,20 @@
 {% endblock %}
 
 {% block content %}
-    <h1>
-        Articulos
-    </h1>
-    {{ include('product/_list.html.twig', {
-        'products' : products
-    })}}
+    <div class="container">
+        <div class="row justify-content-md-center">    
+            <div class="col">
+                <img width="400" src="{{ asset('img/home.jpg') }}"></img>        
+            </div>
+             <div class="col col-lg-6">
+                <div class="jumbotron" style="background-color: cornflowerblue;   color: white;}">
+                    <h1 class="display-4">Bienvenido a Souvenires Jv</h1>
+                    <p class="lead">Tu tienda donde encontraras  todo tipo de suvenires</p>
+                    <hr class="my-4">
+                    <p>Visita nuestra tienda</p>
+                    <a class="btn btn-primary btn-lg" href="{{ path('store') }}" role="button">Comprar</a>
+                    </div>
+            </div>
+    </div>
+    
 {% endblock %}
