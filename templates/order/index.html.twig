@@ -1,0 +1,47 @@
+{% extends 'main.html.twig' %}
+
+{% block title %}Listado de ordenes{% endblock %}
+
+{% block content %}
+
+   <div class="container-fluit">
+    <h1 style="text-align:center">Listado Ordenes</h1>
+      <div class="row justify-content-md-center">
+        <div class="col">
+          <img width="200" src="{{asset('img/list.jpg')}}" style="text-align:center"></img>
+        </div>
+         <div class="col-9 mt-3">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Orden N°</th>
+                            <th scope="col">Refencia</th>
+                            <th scope="col">CLiente</th>
+                            <th scope="col">Estado</th>
+                            <th scope="col">Total</th>
+                            <th scope="col">fecha Orden</th>
+                            <th scope="col">Ver</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for order in orders %}
+                        <tr>
+                            <th scope="row">{{ order.id }}</th>
+                            <td>{{order.code}}</td>
+                            <td>{{order.customer.name}}</td>
+                            <td>{{order.status}}</td>
+                            <td>{{order.totalToPay}}</td>
+                            <td>{{order.createdAt.date|date("d/m/Y")}}</td>
+                            <td>
+                                <a class="btn btn-primary" href="{{ path('show_order', { code: order.code}) }}">
+                                    Ver
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+         </div>
+      </div>
+   </div>
+{% endblock %}

@@ -33,6 +33,20 @@ class OrderController extends AbstractController
     }
 
     /**
+     * Action that shows the list of orders
+     * @Route("/orders/list", name="list_order", methods={"GET"})
+     * @return Response
+     */
+    public function index()
+    {
+        $orders = $this->getDoctrine()->getRepository(Order::class)->findAll();
+
+        return $this->render('order/index.html.twig', [
+            'orders' => $orders,
+        ]);
+    }
+
+    /**
      * Action that creates a new pre order.
      * @param int $productId
      * @param Request $request
@@ -101,8 +115,11 @@ class OrderController extends AbstractController
             throw $this->createNotFoundException('La orden no existe!');
         }
 
+        $isPayedStatus = $order->getStatus() == Order::PAYED_STATUS;
+
         return $this->render('order/show.html.twig', [
             'order' => $order,
+            'is_payed_status' => $isPayedStatus,
             'detail' => $order->getDetails()->first()
         ]);
     }

@@ -18,9 +18,19 @@ class HomeController extends AbstractController
      * @return Response
      */
     public function index()
+    {        
+        return $this->render('home/index.html.twig');
+    }
+
+    /**
+     * Action that shows the homepage
+     * @Route("/store", name="store", methods={"GET"})
+     * @return Response
+     */
+    public function store()
     {
         $products = $this->getDoctrine()->getRepository(Product::class)->findAll();
-        return $this->render('home/index.html.twig', [
+        return $this->render('home/store.html.twig', [
             'products' => $products
         ]);
     }
